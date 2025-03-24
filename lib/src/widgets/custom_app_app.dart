@@ -32,7 +32,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           padding: const EdgeInsets.only(right: 5),
           child: IconButton(
             onPressed: onLoginPressed,
-            icon: const Icon(Icons.login_outlined),
+            icon: const Icon(Icons.mouse_rounded),
           ),
         ),
       ],

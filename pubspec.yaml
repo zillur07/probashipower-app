@@ -37,10 +37,16 @@ dependencies:
   get:
   flutter_svg: 
   smooth_page_indicator: ^1.2.0+3
-  carousel_slider: ^5.0.0
+  # carousel_slider: ^4.2.1
   http: ^1.3.0
   cached_network_image: ^3.2.3
   youtube_player_flutter: ^9.1.1
+  shared_preferences: ^2.0.6
+  flutter_swiper_null_safety: 
+  card_swiper: ^2.0.4
+  intl: ^0.18.1
+  url_launcher: ^6.1.11
+
 
 dev_dependencies:
   flutter_test:

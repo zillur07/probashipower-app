@@ -1,96 +1,75 @@
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart'; // ✅ Import this
+import 'package:get/get.dart';
 
-class HomeSliderComponent extends StatefulWidget {
-  const HomeSliderComponent({super.key});
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:probashipower_app/src/controllers/slider_controller.dart';
+import 'package:probashipower_app/src/models/slider_model.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-  @override
-  State<HomeSliderComponent> createState() => _HomeSliderComponentState();
-}
-
-class _HomeSliderComponentState extends State<HomeSliderComponent> {
-  int _currentIndex = 0;
-  final CarouselSliderController _controller = CarouselSliderController();
-
-  final List<String> addddd = [
-    'assets/img/s1.jpeg',
-    'assets/img/s2.jpeg',
-    'assets/img/s3.jpeg',
-  ];
+class HomeSliderComponent extends StatelessWidget {
+  final SliderController _controller = Get.put(SliderController());
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width - 30.0;
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Stack(
-          children: [
-            CarouselSlider(
-              carouselController: _controller,
-              items: addddd
-                  .map(
-                    (item) => Container(
-                      color: const Color.fromARGB(31, 144, 122, 122),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 0),
-                        child: SizedBox(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ClipRRect(
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(2.0)),
-                              child: Center(
-                                child: Image.asset(
-                                  item,
-                                  fit: BoxFit.cover,
-                                  width: double.infinity,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  )
-                  .toList(),
-              options: CarouselOptions(
-                aspectRatio: 16 / 8,
-                autoPlay: true,
-                autoPlayInterval: const Duration(seconds: 5),
-                viewportFraction: 1.0,
-                autoPlayAnimationDuration: const Duration(milliseconds: 800),
-                autoPlayCurve: Curves.fastOutSlowIn,
-                enlargeCenterPage: false,
-                scrollDirection: Axis.horizontal,
-                onPageChanged: (index, reason) {
-                  setState(() {
-                    _currentIndex = index;
-                  });
-                },
-              ),
-            ),
-            Positioned(
-              bottom: 30,
-              left: (screenWidth - (2 * (addddd.length) - 1) * 8.0) / 2.0,
-              child: AnimatedSmoothIndicator(
-                activeIndex: _currentIndex,
-                count: addddd.length,
-                duration: const Duration(milliseconds: 500),
-                effect: const SlideEffect(
-                  dotWidth: 10.0, // ✅ Small dots
-                  dotHeight: 10.0, // ✅ Small dots
-                  spacing: 10.0,
-                  dotColor: Colors.white,
-                  activeDotColor: Colors.teal,
+    return Obx(() {
+      if (_controller.isLoading.value) {
+        return Center(child: CircularProgressIndicator());
+      }
+
+      return Column(
+        children: [
+          SizedBox(
+            height: 178,
+            child: Swiper(
+              itemBuilder: (context, index) {
+                return _buildSlideItem(_controller.sliderImages[index]);
+              },
+              itemCount: _controller.sliderImages.length,
+              autoplay: true,
+              duration: 1000,
+              onIndexChanged: _controller.changePageIndex,
+              pagination: SwiperPagination(
+                builder: DotSwiperPaginationBuilder(
+                  color: Colors.grey[300],
+                  activeColor: Colors.blue,
                 ),
               ),
             ),
-          ],
+          ),
+          // SizedBox(height: 10),
+          // _buildIndicator(),
+        ],
+      );
+    });
+  }
+
+  Widget _buildSlideItem(SliderModel slider) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 10),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: CachedNetworkImage(
+          imageUrl: slider.sliderImg,
+          fit: BoxFit.cover,
+          placeholder: (context, url) => Container(color: Colors.grey[200]),
+          errorWidget: (context, url, error) => Icon(Icons.error),
         ),
-      ],
+      ),
+    );
+  }
+
+  Widget _buildIndicator() {
+    return Obx(
+      () => AnimatedSmoothIndicator(
+        activeIndex: _controller.currentIndex.value,
+        count: _controller.sliderImages.length,
+        effect: WormEffect(
+          dotHeight: 8,
+          dotWidth: 8,
+          activeDotColor: Colors.blue,
+        ),
+      ),
     );
   }
 }

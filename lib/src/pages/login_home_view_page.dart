@@ -10,6 +10,7 @@ import 'package:probashipower_app/src/pages/job_list_page.dart';
 import 'package:probashipower_app/src/pages/ligal_help_list_page.dart';
 import 'package:probashipower_app/src/pages/loan_list_page.dart';
 import 'package:probashipower_app/src/pages/login_page.dart';
+import 'package:probashipower_app/src/pages/money_rate_page.dart';
 import 'package:probashipower_app/src/pages/news_list_page.dart';
 import 'package:probashipower_app/src/pages/ticket_list_page.dart';
 import 'package:probashipower_app/src/pages/user_review_list_page.dart';
@@ -17,43 +18,43 @@ import 'package:probashipower_app/src/pages/video_list_page.dart';
 import 'package:probashipower_app/src/pages/vip_job_list_page.dart';
 import 'package:probashipower_app/src/widgets/custom_app_app.dart';
 
-class HomeViewPage extends StatelessWidget {
+class LoginHomeViewPage extends StatelessWidget {
   final JobController jobController = Get.put(JobController());
 
-  HomeViewPage({super.key});
+  LoginHomeViewPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: tabColor,
-        title: KText(
-          text: 'প্রবাসী পাওয়ার',
-          color: white,
-          fontSize: 25,
-          fontWeight: FontWeight.w500,
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 5),
-            child: IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.login_outlined),
-            ),
-          ),
-        ],
-      ),
-      // appBar: CustomAppBar(
-      //   title: 'প্রবাসী পাওয়ার',
-      //   backgroundColor: tabColor, // Replace with your desired color
-      //   textColor: Colors.white,
-      //   onLoginPressed: () {
-      //     // Add your login logic here
-      //     Get.to(LoginPage());
-      //     print('Login button pressed');
-      //   },
+      // appBar: AppBar(
+      //   centerTitle: true,
+      //   backgroundColor: tabColor,
+      //   title: KText(
+      //     text: 'প্রবাসী পাওয়ার',
+      //     color: white,
+      //     fontSize: 25,
+      //     fontWeight: FontWeight.w500,
+      //   ),
+      //   actions: [
+      //     Padding(
+      //       padding: const EdgeInsets.only(
+      //         right: 5,
+      //       ),
+      //       child:
+      //           IconButton(onPressed: () {}, icon: Icon(Icons.login_outlined)),
+      //     ),
+      //   ],
       // ),
+      appBar: CustomAppBar(
+        title: 'প্রবাসী পাওয়ার',
+        backgroundColor: tabColor, // Replace with your desired color
+        textColor: Colors.white,
+        onLoginPressed: () {
+          // Add your login logic here
+          Get.to(MoneyRatePage());
+          print('Login button pressed');
+        },
+      ),
       drawer: const Drawer(),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),

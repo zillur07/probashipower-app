@@ -1,87 +1,129 @@
+// lib/src/pages/notification_page.dart
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:probashipower_app/src/config/colors.dart';
+import 'package:probashipower_app/src/controllers/notification_controller.dart';
+import 'package:probashipower_app/src/helpers/k_text.dart';
 import 'package:probashipower_app/src/widgets/custom_app_app.dart';
 
-import '../helpers/k_text.dart';
-
 class NotificationPage extends StatelessWidget {
-  // Dummy notification data
-  final List<String> notifications = [
-    "You have a new message",
-    "Your order has been shipped",
-    "Reminder: Meeting at 3 PM",
-    "New update available",
-    "Your payment was successful"
-  ];
-
-   NotificationPage({super.key});
+  final NotificationController _controller = Get.put(NotificationController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
         title: 'প্রবাসী পাওয়ার',
-        backgroundColor: tabColor, // Replace with your desired color
+        backgroundColor: tabColor,
         textColor: Colors.white,
-        onLoginPressed: () {
-          // Add your login logic here
-          print('Login button pressed');
-        },
+        onLoginPressed: () => Get.offAllNamed('/login'),
       ),
-      body: Column(
-        children: [
-          Container(
-            margin: const EdgeInsets.symmetric(
-              horizontal: 70,
-              vertical: 15,
-            ),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: Colors.teal.withOpacity(0.3))),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                      height: 30, child: Image.asset('assets/img/job.png')),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  const KText(
-                    text: 'নোটিশ',
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                  )
-                ],
-              ),
-            ),
+      body: Obx(() {
+        if (_controller.isLoading.value && _controller.notifications.isEmpty) {
+          return _buildLoading();
+        }
+
+        if (_controller.error.isNotEmpty) {
+          return _buildError();
+        }
+
+        if (_controller.notifications.isEmpty) {
+          return _buildEmpty();
+        }
+
+        return _buildNotificationList();
+      }),
+    );
+  }
+
+  Widget _buildLoading() => Center(child: CircularProgressIndicator());
+
+  Widget _buildError() => Center(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        KText(text: _controller.error.value, color: Colors.red, fontSize: 16),
+        if (_controller.error.value.contains('login'))
+          TextButton(
+            onPressed: () => Get.offAllNamed('/login'),
+            child: KText(text: 'Login Now'),
           ),
-          ListView.builder(
+      ],
+    ),
+  );
+
+  Widget _buildEmpty() => Center(
+    child: KText(
+      text: 'No notifications available',
+      fontSize: 18,
+      color: Colors.red,
+    ),
+  );
+
+  Widget _buildNotificationList() => RefreshIndicator(
+    onRefresh: _controller.refresh,
+    child: Column(
+      children: [
+        _buildHeader(),
+        Expanded(
+          child: ListView.builder(
             shrinkWrap: true,
             primary: false,
-            itemCount: notifications.length,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 15,
-                  vertical: 2,
-                ),
-                child: Card(
-                  child: ListTile(
-                    leading: Icon(Icons.notifications_active),
-                    title: Text(notifications[index]),
-                    subtitle: Text('Just now'),
-                    onTap: () {
-                      // Handle notification tap
-                    },
-                  ),
-                ),
-              );
-            },
+            padding: EdgeInsets.only(top: 8),
+            itemCount: _controller.notifications.length,
+            itemBuilder: (context, index) => _buildNotificationItem(index),
           ),
+        ),
+      ],
+    ),
+  );
+
+  Widget _buildHeader() => Container(
+    margin: EdgeInsets.symmetric(horizontal: 70, vertical: 15),
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(10),
+      border: Border.all(color: Colors.teal.withOpacity(0.3)),
+    ),
+    child: Padding(
+      padding: EdgeInsets.all(8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset('assets/img/job.png', height: 30),
+          SizedBox(width: 10),
+          KText(text: 'নোটিশ', fontSize: 22, fontWeight: FontWeight.bold),
         ],
       ),
+    ),
+  );
+
+  Widget _buildNotificationItem(int index) {
+    final notification = _controller.notifications[index];
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      child: Card(
+        elevation: 1,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        child: ListTile(
+          leading: Icon(Icons.notifications_active, color: tabColor),
+          title: KText(text: notification.message),
+          subtitle: KText(
+            text: _formatDate(notification.date),
+            color: Colors.grey[600],
+          ),
+          contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        ),
+      ),
     );
+  }
+
+  String _formatDate(String dateString) {
+    try {
+      final date = DateTime.parse(dateString);
+      return DateFormat('dd MMM yyyy').format(date);
+    } catch (e) {
+      return dateString;
+    }
   }
 }

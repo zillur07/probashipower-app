@@ -4,13 +4,12 @@ import 'package:probashipower_app/src/config/colors.dart';
 import 'package:probashipower_app/src/controllers/home_controller.dart';
 import 'package:probashipower_app/src/pages/home_view_page.dart';
 import 'package:probashipower_app/src/pages/login_home_view_page.dart';
-import 'package:probashipower_app/src/pages/login_page.dart';
 import 'package:probashipower_app/src/pages/profile_page.dart';
 import 'package:probashipower_app/src/pages/socle_midia_page.dart';
 import 'package:probashipower_app/src/pages/notification_page.dart';
 
-class MainPage extends StatelessWidget {
-  const MainPage({super.key});
+class LoginMainPage extends StatelessWidget {
+  const LoginMainPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -50,10 +49,10 @@ class MainPage extends StatelessWidget {
 
     // Navigation body pages
     final List<Widget> navBody = [
-      HomeViewPage(),
-      LoginPage(),
+      LoginHomeViewPage(),
+      ProfilePage(),
       SocleMidiaPage(),
-      LoginPage(),
+      NotificationPage(),
     ];
 
     return Scaffold(
