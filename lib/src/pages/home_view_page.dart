@@ -794,6 +794,7 @@ class HomeViewPage extends StatelessWidget {
     );
   }
 
+  //.........
   Widget _buildMenuButton(
     String imagePath,
     String text,
