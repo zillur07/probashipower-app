@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:probashipower_app/src/controllers/vip_job_controller.dart';
 import 'package:probashipower_app/src/config/colors.dart';
 import 'package:probashipower_app/src/helpers/k_text.dart';
+import 'package:probashipower_app/src/pages/vip_job_detail_page.dart';
 import 'package:probashipower_app/src/widgets/custom_app_app.dart';
 
 class VipJobListPage extends StatelessWidget {
@@ -156,7 +157,15 @@ class VipJobListPage extends StatelessWidget {
                                       color: Colors.teal,
                                       disabledColor: Colors.teal,
                                       focusColor: Colors.red,
-                                      onPressed: () {},
+                                      onPressed: () async {
+                                        // Add this await to ensure the navigation completes
+                                        await Get.to(
+                                          () => VipJobDetailPage(
+                                            jobId: int.parse(job.id),
+                                          ),
+                                          transition: Transition.rightToLeft,
+                                        );
+                                      },
                                       icon: const Icon(
                                         Icons.arrow_forward,
                                         color: Colors.teal,

@@ -10,7 +10,8 @@ class KText extends StatelessWidget {
   final double? letterSpacing;
   final TextAlign? textAlign;
 
-  const KText({super.key, 
+  const KText({
+    super.key,
     required this.text,
     this.color,
     this.fontSize,

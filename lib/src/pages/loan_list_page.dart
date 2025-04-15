@@ -1,8 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:probashipower_app/src/widgets/custom_app_app.dart';
-import '../controllers/loan_controller.dart';
-
 // class LoanListPage extends StatelessWidget {
 //   final LoanController loanController = Get.put(LoanController());
 
@@ -53,6 +48,11 @@ import '../controllers/loan_controller.dart';
 //   }
 // }
 
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:probashipower_app/src/pages/loan_detail_page.dart';
+import 'package:probashipower_app/src/widgets/custom_app_app.dart';
+import '../controllers/loan_controller.dart';
 import 'package:probashipower_app/src/config/colors.dart';
 
 import 'package:probashipower_app/src/helpers/k_text.dart';
@@ -210,7 +210,12 @@ class LoanListPage extends StatelessWidget {
                                       color: Colors.teal,
                                       disabledColor: Colors.teal,
                                       focusColor: Colors.red,
-                                      onPressed: () {},
+                                      onPressed: () async {
+                                        await Get.to(
+                                          () => LoanDetailPage(loanId: loan.id),
+                                          transition: Transition.rightToLeft,
+                                        );
+                                      },
                                       icon: const Icon(
                                         Icons.arrow_forward,
                                         color: Colors.teal,
