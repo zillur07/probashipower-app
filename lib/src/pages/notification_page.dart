@@ -109,7 +109,7 @@ class NotificationPage extends StatelessWidget {
           leading: Icon(Icons.notifications_active, color: tabColor),
           title: KText(text: notification.message),
           subtitle: KText(
-            text: _formatDate(notification.date),
+            text: _formatDate(notification.date!),
             color: Colors.grey[600],
           ),
           contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),

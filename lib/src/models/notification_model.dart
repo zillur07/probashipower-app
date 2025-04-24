@@ -1,20 +1,24 @@
-// lib/src/models/notification_model.dart
 class NotificationModel {
-  final int id;
-  final String date;
-  final String message;
+  int? id;
+  String? date;
+  String? message;
+  String? status;
 
-  NotificationModel({
-    required this.id,
-    required this.date,
-    required this.message,
-  });
+  NotificationModel({this.id, this.date, this.message, this.status});
 
-  factory NotificationModel.fromJson(Map<String, dynamic> json) {
-    return NotificationModel(
-      id: json['id'] ?? 0,
-      date: json['date'] ?? '',
-      message: json['message'] ?? '',
-    );
+  NotificationModel.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    date = json['date'];
+    message = json['message'];
+    status = json['status'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['date'] = date;
+    data['message'] = message;
+    data['status'] = status;
+    return data;
   }
 }

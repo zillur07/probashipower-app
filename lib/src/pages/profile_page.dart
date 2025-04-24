@@ -6,136 +6,6 @@ import 'package:probashipower_app/src/controllers/auth_controller.dart';
 import 'package:probashipower_app/src/controllers/profile_controller.dart';
 import 'package:probashipower_app/src/helpers/k_text.dart';
 import 'package:probashipower_app/src/pages/login_page.dart';
-import 'package:probashipower_app/src/widgets/custom_app_app.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-// class ProfilePage extends StatelessWidget {
-//   const ProfilePage({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       // appBar: AppBar(
-//       //   title: const Text('Profile'),
-//       //   centerTitle: true,
-//       //   backgroundColor: Colors.blue,
-//       //   elevation: 0,
-//       //   actions: [
-//       //     IconButton(
-//       //       icon: const Icon(Icons.edit),
-//       //       onPressed: () {
-//       //         // Edit profile functionality
-//       //       },
-//       //     ),
-//       //   ],
-//       //   leading: IconButton(
-//       //     icon: const Icon(Icons.arrow_back),
-//       //     onPressed: () {
-//       //       Navigator.pop(context);
-//       //     },
-//       //   ),
-//       // ),
-
-//       appBar: AppBar(
-//         centerTitle: true,
-//         backgroundColor: tabColor,
-//         title: const KText(
-//           text: 'প্রবাসী পাওয়ার',
-//           color: white,
-//           fontSize: 25,
-//           fontWeight: FontWeight.w500,
-//         ),
-//         actions: [
-//           Padding(
-//             padding: const EdgeInsets.only(
-//               right: 5,
-//             ),
-//             child: IconButton(
-//                 onPressed: () {}, icon: const Icon(Icons.login_outlined)),
-//           ),
-//         ],
-//         // leading: IconButton(
-//         //   icon: const Icon(Icons.arrow_back),
-//         //   onPressed: () {
-//         //     Navigator.pop(context);
-//         //   },
-//         // ),
-//       ),
-//       drawer: Drawer(),
-//       body: SingleChildScrollView(
-//         child: Column(
-//           children: [
-//             SizedBox(
-//               height: 15,
-//             ),
-//             KText(
-//               text: 'আপনার প্রোফাইল',
-//               fontSize: 25,
-//               fontWeight: FontWeight.bold,
-//             ),
-//             const SizedBox(height: 20),
-//             const CircleAvatar(
-//               radius: 50,
-//               backgroundImage: AssetImage(
-//                   'assets/img/sohid/dipto-dey.jpg'), // Add your profile image in assets
-//             ),
-//             const SizedBox(height: 20),
-//             const Text(
-//               'John Doe', // Replace with actual name
-//               style: TextStyle(
-//                 fontSize: 24,
-//                 fontWeight: FontWeight.bold,
-//               ),
-//             ),
-//             const SizedBox(height: 10),
-//             const Text(
-//               'ID/Refer Code : PPR-2', // Replace with actual designation
-//               style: TextStyle(
-//                 fontSize: 16,
-//                 color: Colors.grey,
-//               ),
-//             ),
-//             const SizedBox(height: 20),
-//             const ListTile(
-//               leading: Icon(Icons.phone, color: Colors.blue),
-//               title: Text('Mobile Number'),
-//               subtitle:
-//                   Text('+123 456 7890'), // Replace with actual mobile number
-//             ),
-//             const Divider(),
-//             const ListTile(
-//               leading: Icon(Icons.message, color: Colors.green),
-//               title: Text('WhatsApp Number'),
-//               subtitle:
-//                   Text('+123 456 7890'), // Replace with actual WhatsApp number
-//             ),
-//             const Divider(),
-//             const ListTile(
-//               leading: Icon(Icons.email, color: Colors.red),
-//               title: Text('Email'),
-//               subtitle:
-//                   Text('john.doe@example.com'), // Replace with actual email
-//             ),
-//             const Divider(),
-//             const SizedBox(height: 20),
-//             ElevatedButton(
-//               onPressed: () {
-//                 // Add functionality to edit profile
-//               },
-//               style: ElevatedButton.styleFrom(
-//                 padding:
-//                     const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-//                 textStyle: const TextStyle(fontSize: 16),
-//               ),
-//               child: Text('Edit Profile'),
-//             ),
-//             const SizedBox(height: 20),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
 
 class ProfilePage extends StatelessWidget {
   final ProfileController _profileController = Get.put(ProfileController());
@@ -143,27 +13,6 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   // ... your existing app bar code
-      //   actions: [
-      //     IconButton(
-      //       icon: const Icon(Icons.logout),
-      //       onPressed: () async {
-      //
-      //       },
-      //     ),
-      //   ],
-      // ),
-      // appBar: CustomAppBar(
-      //   title: 'প্রবাসী পাওয়ার',
-      //   backgroundColor: tabColor, // Replace with your desired color
-      //   textColor: Colors.white,
-      //   onLoginPressed: () async {
-      //     // Add your login logic here
-      //     await _logout();
-      //     print('Login button pressed');
-      //   },
-      // ),
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: tabColor,
@@ -177,107 +26,229 @@ class ProfilePage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(right: 5),
             child: IconButton(
-              icon: Icon(Icons.logout),
+              icon: Icon(Icons.logout, color: Colors.white),
               onPressed: () => Get.find<AuthController>().logout(),
             ),
           ),
         ],
+        elevation: 0,
+        // shape: const RoundedRectangleBorder(
+        //   borderRadius: BorderRadius.vertical(bottom: Radius.circular(15)),
+        // ),
       ),
       body: Obx(() {
         if (_profileController.isLoading.value) {
-          return Center(child: CircularProgressIndicator());
+          return Center(
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(tabColor),
+            ),
+          );
         }
 
-        // Show login prompt if not authenticated
         if (_profileController.profile.value.userid == 0) {
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Please login to view profile'),
+                Icon(Icons.account_circle, size: 80, color: Colors.grey[400]),
+                SizedBox(height: 20),
+                KText(
+                  text: 'Please login to view your profile',
+                  fontSize: 18,
+                  color: Colors.grey[600],
+                ),
+                SizedBox(height: 30),
                 ElevatedButton(
-                  onPressed: () => Get.toNamed('/login'),
-                  child: Text('Login'),
+                  onPressed: () => Get.to(LoginPage()),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: tabColor,
+                    padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: KText(
+                    text: 'Login',
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
                 ),
               ],
             ),
           );
         }
 
-        return _buildProfileContent();
+        return _buildProfileContent(context);
       }),
     );
   }
 
-  Widget _buildProfileContent() {
+  Widget _buildProfileContent(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         children: [
-          SizedBox(height: 15),
-          KText(
-            text: 'আপনার প্রোফাইল',
-            fontSize: 25,
-            fontWeight: FontWeight.bold,
-          ),
+          // Container(
+          //   height: 20,
+          //   decoration: BoxDecoration(
+          //     color: tabColor,
+          //     borderRadius: BorderRadius.vertical(bottom: Radius.circular(30)),
+          //   ),
+          // ),
           SizedBox(height: 20),
-          CircleAvatar(
-            radius: 50,
-            backgroundImage:
-                _profileController.profile.value.userImg.isNotEmpty
-                    ? CachedNetworkImageProvider(
-                      _profileController.profile.value.userImg,
-                    )
-                    : AssetImage('assets/img/sohid/dipto-dey.jpg')
-                        as ImageProvider,
-          ),
-          SizedBox(height: 20),
-          KText(
-            text: _profileController.profile.value.name,
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
-          SizedBox(height: 10),
-          KText(
-            text: 'ID/Refer Code : ${_profileController.profile.value.refId}',
-            fontSize: 16,
-            color: Colors.grey,
-          ),
-          SizedBox(height: 20),
-          ListTile(
-            leading: Icon(Icons.phone, color: Colors.blue),
-            title: KText(text: 'Mobile Number'),
-            subtitle: KText(text: _profileController.profile.value.mobile),
-          ),
-          Divider(),
-          ListTile(
-            leading: Icon(Icons.message, color: Colors.green),
-            title: KText(text: 'WhatsApp Number'),
-            subtitle: KText(text: _profileController.profile.value.waNumber),
-          ),
-          Divider(),
-          SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: () {
-              // Add functionality to edit profile
-            },
-            style: ElevatedButton.styleFrom(
-              padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-              textStyle: TextStyle(fontSize: 16),
+          Transform.translate(
+            offset: Offset(0, -10),
+            child: Center(
+              child: Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(color: Colors.white, width: 5),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 10,
+                      offset: Offset(0, 5),
+                    ),
+                  ],
+                ),
+                child: CircleAvatar(
+                  radius: 60,
+                  backgroundColor: Colors.grey[200],
+                  backgroundImage:
+                      _profileController.profile.value.userImg.isNotEmpty
+                          ? CachedNetworkImageProvider(
+                            _profileController.profile.value.userImg,
+                          )
+                          : AssetImage('assets/img/sohid/dipto-dey.jpg')
+                              as ImageProvider,
+                ),
+              ),
             ),
-            child: KText(text: 'Edit Profile'),
           ),
-          SizedBox(height: 20),
+          // SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Column(
+              children: [
+                KText(
+                  text: _profileController.profile.value.name,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey[800],
+                ),
+                SizedBox(height: 8),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                  decoration: BoxDecoration(
+                    color: tabColor.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: KText(
+                    text: 'ID: ${_profileController.profile.value.refId}',
+                    fontSize: 16,
+                    color: tabColor,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                SizedBox(height: 30),
+                _buildProfileCard(context),
+                SizedBox(height: 30),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      // Edit profile functionality
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: tabColor,
+                      padding: EdgeInsets.symmetric(vertical: 15),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: KText(
+                      text: 'Edit Profile',
+                      color: Colors.white,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20),
+              ],
+            ),
+          ),
         ],
       ),
     );
   }
 
-  Future<void> _logout() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.remove('token'); // Remove token on logout
-    await prefs.remove('userid');
-    // Remove other user data as needed
+  Widget _buildProfileCard(BuildContext context) {
+    return Card(
+      elevation: 5,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            _buildInfoRow(
+              icon: Icons.phone,
+              iconColor: Colors.blue,
+              title: 'Mobile Number',
+              value: _profileController.profile.value.mobile,
+            ),
+            Divider(height: 30, thickness: 0.5),
+            _buildInfoRow(
+              icon: Icons.message,
+              iconColor: Colors.green,
+              title: 'WhatsApp Number',
+              value: _profileController.profile.value.waNumber,
+            ),
+            Divider(height: 30, thickness: 0.5),
+            _buildInfoRow(
+              icon: Icons.email,
+              iconColor: Colors.red,
+              title: 'Email',
+              value: _profileController.profile.value.email ?? 'Not provided',
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
-    Get.offAll(LoginPage()); // Navigate to login page
+  Widget _buildInfoRow({
+    required IconData icon,
+    required Color iconColor,
+    required String title,
+    required String value,
+  }) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: iconColor.withOpacity(0.2),
+            shape: BoxShape.circle,
+          ),
+          child: Icon(icon, color: iconColor, size: 20),
+        ),
+        SizedBox(width: 15),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              KText(text: title, fontSize: 14, color: Colors.grey[600]),
+              SizedBox(height: 5),
+              KText(
+                text: value,
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: Colors.grey[800],
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 }

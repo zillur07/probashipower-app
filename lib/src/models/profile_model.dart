@@ -26,4 +26,6 @@ class ProfileModel {
       userImg: json['user_img'] ?? '',
     );
   }
+
+  get email => null;
 }
